@@ -1,0 +1,15 @@
+{
+  "originHash" : "fb410e3ec0f11859622d26881bdb2ea333b8ba69d4d6058c9c3a124d2ab8a49c",
+  "pins" : [
+    {
+      "identity" : "truvideo-sdk-ios-video",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Truvideo/truvideo-sdk-ios-video",
+      "state" : {
+        "branch" : "76.2.1-RC.62",
+        "revision" : "56eca972537ec63ec716e77476ea64ba4300b54c"
+      }
+    }
+  ],
+  "version" : 3
+}

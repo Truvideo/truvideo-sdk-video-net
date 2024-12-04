@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>TruVideoVideoiOSBinding</id>
+    <version>0.0.1</version>
+    <authors>Truvideo</authors>
+    <description>Package Description</description>
+    <repository url="https://github.com/Truvideo/truvideo-sdk-video-net" />
+    <dependencies>
+      <group targetFramework="Xamarin.iOS1.0" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="System.Drawing.Common.dll" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="Xamarin.iOS" targetFramework="Xamarin.iOS1.0" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="TruVideoVideoiOSBinding.targets" target="build/TruVideoVideoiOSBinding.targets" />
+    <file src="bin/Release/TruVideoVideoiOSBinding.dll" target="lib/xamarinios10" />
+    <file src="xcframeworks/ffmpegkit.xcframework/**" target="build/native/ffmpegkit.xcframework/" />
+    <file src="xcframeworks/libavcodec.xcframework/**" target="build/native/libavcodec.xcframework/" />
+    <file src="xcframeworks/libavdevice.xcframework/**" target="build/native/libavdevice.xcframework/" />
+    <file src="xcframeworks/libavfilter.xcframework/**" target="build/native/libavfilter.xcframework/" />
+    <file src="xcframeworks/libavformat.xcframework/**" target="build/native/libavformat.xcframework/" />
+    <file src="xcframeworks/libavutil.xcframework/**" target="build/native/libavutil.xcframework/" />
+    <file src="xcframeworks/libswresample.xcframework/**" target="build/native/libswresample.xcframework/" />
+    <file src="xcframeworks/libswscale.xcframework/**" target="build/native/libswscale.xcframework/" />
+    <file src="xcframeworks/TruvideoVideo.xcframework/**" target="build/native/TruvideoVideo.xcframework/" />
+    <file src="xcframeworks/TruvideoSdkVideo.xcframework/**" target="build/native/TruvideoSdkVideo.xcframework/" />
+  </files>
+</package>

@@ -1,0 +1,44 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/TruvideoVideo.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/TruvideoSdkVideo.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/ffmpegkit.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libavcodec.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libavdevice.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libavfilter.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libavformat.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libavutil.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libswresample.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+        <NativeReference Include="$(MSBuildThisFileDirectory)native/libswscale.xcframework">
+            <IsCxx>false</IsCxx>
+            <Kind>Framework</Kind>
+        </NativeReference>
+    </ItemGroup>
+</Project>

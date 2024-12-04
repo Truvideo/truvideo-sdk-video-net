@@ -1,0 +1,389 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "TruvideoVideo"
+      },
+      {
+        "kind": "Import",
+        "name": "TruvideoSdkVideo",
+        "printedName": "TruvideoSdkVideo",
+        "declKind": "Import",
+        "moduleName": "TruvideoVideo"
+      },
+      {
+        "kind": "Import",
+        "name": "CommonCrypto",
+        "printedName": "CommonCrypto",
+        "declKind": "Import",
+        "moduleName": "TruvideoVideo"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "TruvideoVideoSdk",
+        "printedName": "TruvideoVideoSdk",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "shared",
+            "printedName": "shared",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "TruvideoVideoSdk",
+                "printedName": "TruvideoVideo.TruvideoVideoSdk",
+                "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk(cpy)shared",
+            "mangledName": "$s13TruvideoVideo0aB3SdkC6sharedACvpZ",
+            "moduleName": "TruvideoVideo",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "TruvideoVideoSdk",
+                    "printedName": "TruvideoVideo.TruvideoVideoSdk",
+                    "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk(cm)shared",
+                "mangledName": "$s13TruvideoVideo0aB3SdkC6sharedACvgZ",
+                "moduleName": "TruvideoVideo",
+                "static": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "generateThumbnail",
+            "printedName": "generateThumbnail(request:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ThumbnailRequest",
+                "printedName": "TruvideoVideo.ThumbnailRequest",
+                "usr": "c:@M@TruvideoVideo@objc(cs)ThumbnailRequest"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk(im)generateThumbnailWithRequest:completionHandler:",
+            "mangledName": "$s13TruvideoVideo0aB3SdkC17generateThumbnail7request10Foundation3URLVAA0E7RequestC_tYaKF",
+            "moduleName": "TruvideoVideo",
+            "objc_name": "generateThumbnailWithRequest:completionHandler:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "TruvideoVideoSdk",
+                "printedName": "TruvideoVideo.TruvideoVideoSdk",
+                "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk(im)init",
+            "mangledName": "$s13TruvideoVideo0aB3SdkCACycfc",
+            "moduleName": "TruvideoVideo",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk",
+        "mangledName": "$s13TruvideoVideo0aB3SdkC",
+        "moduleName": "TruvideoVideo",
+        "declAttributes": [
+          "AccessControl",
+          "Final",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ThumbnailRequest",
+        "printedName": "ThumbnailRequest",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(url:position:width:height:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ThumbnailRequest",
+                "printedName": "TruvideoVideo.ThumbnailRequest",
+                "usr": "c:@M@TruvideoVideo@objc(cs)ThumbnailRequest"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.NSNumber?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSNumber",
+                    "printedName": "Foundation.NSNumber",
+                    "usr": "c:objc(cs)NSNumber"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.NSNumber?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSNumber",
+                    "printedName": "Foundation.NSNumber",
+                    "usr": "c:objc(cs)NSNumber"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.NSNumber?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSNumber",
+                    "printedName": "Foundation.NSNumber",
+                    "usr": "c:objc(cs)NSNumber"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@TruvideoVideo@objc(cs)ThumbnailRequest(im)initWithUrl:position:width:height:",
+            "mangledName": "$s13TruvideoVideo16ThumbnailRequestC3url8position5width6heightAC10Foundation3URLV_So8NSNumberCSgA2Mtcfc",
+            "moduleName": "TruvideoVideo",
+            "objc_name": "initWithUrl:position:width:height:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ThumbnailRequest",
+                "printedName": "TruvideoVideo.ThumbnailRequest",
+                "usr": "c:@M@TruvideoVideo@objc(cs)ThumbnailRequest"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@TruvideoVideo@objc(cs)ThumbnailRequest(im)init",
+            "mangledName": "$s13TruvideoVideo16ThumbnailRequestCACycfc",
+            "moduleName": "TruvideoVideo",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@TruvideoVideo@objc(cs)ThumbnailRequest",
+        "mangledName": "$s13TruvideoVideo16ThumbnailRequestC",
+        "moduleName": "TruvideoVideo",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/douglas_poveda\/TruVideo\/net\/truvideo\/truvideo-sdk-video-net\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "kind": "StringLiteral",
+      "offset": 694,
+      "length": 16,
+      "value": "\"TruvideoVideo.ThumbnailRequest\""
+    }
+  ]
+}
