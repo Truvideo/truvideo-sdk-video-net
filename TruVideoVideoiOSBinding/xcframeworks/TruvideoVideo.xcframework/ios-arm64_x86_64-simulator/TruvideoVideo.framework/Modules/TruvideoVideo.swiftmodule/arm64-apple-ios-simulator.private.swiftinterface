@@ -1,23 +1,30 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
 // swift-module-flags: -target arm64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name TruvideoVideo
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
 import CommonCrypto
 import Foundation
 import Swift
 import TruvideoSdkVideo
 @_exported import TruvideoVideo
+import UIKit
 import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 @_inheritsConvenienceInitializers @objc final public class TruvideoVideoSdk : ObjectiveC.NSObject {
   @objc public static let shared: TruvideoVideo.TruvideoVideoSdk
-  #if compiler(>=5.3) && $AsyncAwait
-  @objc final public func generateThumbnail(request: TruvideoVideo.ThumbnailRequest) async throws -> Foundation.URL
-  #endif
+  @objc final public func generateThumbnail(request: TruvideoVideo.ThumbnailRequest, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func editVideo(input: Foundation.URL, output: Foundation.URL, viewController: UIKit.UIViewController, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func concatVideos(input: [Foundation.URL], output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func mergeVideos(input: [Foundation.URL], output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: Swift.String, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func encodeVideo(input: Foundation.URL, output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: Swift.String, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func compareVideos(input: [Foundation.URL], completion: @escaping (_ result: Swift.Bool, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func clearNoise(input: Foundation.URL, output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func getVideoInfo(input: Foundation.URL, completion: @escaping (_ response: [[Swift.String : Any]]?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc override dynamic public init()
   @objc deinit
 }
 @objc public class ThumbnailRequest : ObjectiveC.NSObject {
-  @objc public init(url: Foundation.URL, position: Foundation.NSNumber?, width: Foundation.NSNumber?, height: Foundation.NSNumber?)
+  @objc public init(url: Foundation.URL, position: Foundation.NSNumber?, width: Foundation.NSNumber?, height: Foundation.NSNumber?, outputURL: Foundation.URL)
   @objc deinit
 }

@@ -45977,8 +45977,8 @@
       "filePath": "\/Users\/vagrant\/git\/CI.swift",
       "kind": "StringLiteral",
       "offset": 151,
-      "length": 4,
-      "value": "\"RC\""
+      "length": 6,
+      "value": "\"PROD\""
     },
     {
       "filePath": "\/Users\/vagrant\/git\/TruvideoSdkVideo\/Editor\/Views\/TruvideoSdkVideoPlayer.swift",

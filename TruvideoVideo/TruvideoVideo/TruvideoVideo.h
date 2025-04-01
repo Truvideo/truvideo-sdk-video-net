@@ -7,12 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for TruvideoCore.
-FOUNDATION_EXPORT double TruvideoCoreVersionNumber;
+//! Project version number for TruvideoVideo.
+FOUNDATION_EXPORT double TruvideoVideoVersionNumber;
 
-//! Project version string for TruvideoCore.
-FOUNDATION_EXPORT const unsigned char TruvideoCoreVersionString[];
+//! Project version string for TruvideoVideo.
+FOUNDATION_EXPORT const unsigned char TruvideoVideoVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <TruvideoCore/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <TruvideoVideo/PublicHeader.h>
 
 
