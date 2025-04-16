@@ -2,6 +2,7 @@
 // swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
 // swift-module-flags: -target x86_64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name TruvideoVideo
 // swift-module-flags-ignorable: -no-verify-emitted-module-interface
+import Combine
 import CommonCrypto
 import Foundation
 import Swift
@@ -14,10 +15,13 @@ import _SwiftConcurrencyShims
 @_inheritsConvenienceInitializers @objc final public class TruvideoVideoSdk : ObjectiveC.NSObject {
   @objc public static let shared: TruvideoVideo.TruvideoVideoSdk
   @objc final public func generateThumbnail(request: TruvideoVideo.ThumbnailRequest, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func getAllRequestObjC(withStatus: TruvideoVideo.VideoRequestStatus, completion: @escaping (_ result: Foundation.NSArray?, _ error: Foundation.NSError?) -> Swift.Void)
+  @objc final public func streamRequestsObjC(withStatus: TruvideoVideo.VideoRequestStatus, completion: @escaping (_ result: Foundation.NSArray?, _ error: Foundation.NSError?) -> Swift.Void)
+  @objc final public func streamRequests(withId: Swift.String, completion: @escaping (_ result: Foundation.NSDictionary?, _ error: Foundation.NSError?) -> Swift.Void)
   @objc final public func editVideo(input: Foundation.URL, output: Foundation.URL, viewController: UIKit.UIViewController, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func concatVideos(input: [Foundation.URL], output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
-  @objc final public func mergeVideos(input: [Foundation.URL], output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: Swift.String, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
-  @objc final public func encodeVideo(input: Foundation.URL, output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: Swift.String, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func mergeVideos(input: [Foundation.URL], output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func encodeVideo(input: Foundation.URL, output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func compareVideos(input: [Foundation.URL], completion: @escaping (_ result: Swift.Bool, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func clearNoise(input: Foundation.URL, output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func getVideoInfo(input: Foundation.URL, completion: @escaping (_ response: [[Swift.String : Any]]?, _ error: (any Swift.Error)?) -> Swift.Void)
@@ -28,3 +32,45 @@ import _SwiftConcurrencyShims
   @objc public init(url: Foundation.URL, position: Foundation.NSNumber?, width: Foundation.NSNumber?, height: Foundation.NSNumber?, outputURL: Foundation.URL)
   @objc deinit
 }
+@objc public class VideoTracks : ObjectiveC.NSObject {
+  @objc public init(entryIndex: Foundation.NSNumber, width: Foundation.NSNumber? = nil, height: Foundation.NSNumber? = nil)
+  @objc deinit
+}
+@objc public class MergeVideoTracks : ObjectiveC.NSObject {
+  @objc public init(entryIndex: Foundation.NSNumber, width: Foundation.NSNumber? = nil, height: Foundation.NSNumber? = nil, fileIndex: Foundation.NSNumber)
+  @objc deinit
+}
+@objc public class MergeAudioTracks : ObjectiveC.NSObject {
+  @objc public init(entryIndex: Foundation.NSNumber, fileIndex: Foundation.NSNumber)
+  @objc deinit
+}
+@objc public enum VideoRequestStatus : Swift.Int {
+  case cancelled
+  case error
+  case idle
+  case processing
+  case complete
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public enum VideoFrameRate : Swift.Int {
+  case twentyFourFps
+  case twentyFiveFps
+  case thirtyFps
+  case fiftyFps
+  case sixtyFps
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension TruvideoVideo.VideoRequestStatus : Swift.Equatable {}
+extension TruvideoVideo.VideoRequestStatus : Swift.Hashable {}
+extension TruvideoVideo.VideoRequestStatus : Swift.RawRepresentable {}
+extension TruvideoVideo.VideoFrameRate : Swift.Equatable {}
+extension TruvideoVideo.VideoFrameRate : Swift.Hashable {}
+extension TruvideoVideo.VideoFrameRate : Swift.RawRepresentable {}

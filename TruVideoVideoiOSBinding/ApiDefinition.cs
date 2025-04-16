@@ -35,10 +35,10 @@ namespace TruvideoVideoiOS
         void ConcatVideos(NSUrl[] input, NSUrl output, Action<NSUrl, NSError> completion);
 
         [Export("mergeVideosWithInput:output:width:height:frameRate:completion:")]
-        void MergeVideos(NSUrl[] input, NSUrl output, NSNumber width, NSNumber height, NSString frameRate, Action<NSUrl, NSError> completion);
+        void MergeVideos(NSUrl[] input, NSUrl output, NSNumber width, NSNumber height, VideoFrameRate frameRate, Action<NSUrl, NSError> completion);
 
         [Export("encodeVideoWithInput:output:width:height:frameRate:completion:")]
-        void EncodeVideo(NSUrl input, NSUrl output, NSNumber width, NSNumber height, NSString frameRate, Action<NSUrl, NSError> completion);
+        void EncodeVideo(NSUrl input, NSUrl output, NSNumber width, NSNumber height, VideoFrameRate frameRate, Action<NSUrl, NSError> completion);
 
         [Export("compareVideosWithInput:completion:")]
         void CompareVideos(NSUrl[] input, Action<bool, NSError> completion);

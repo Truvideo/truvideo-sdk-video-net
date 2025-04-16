@@ -303,8 +303,24 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 #if defined(__OBJC__)
-@class NSURL;
 @class NSNumber;
+
+SWIFT_CLASS("_TtC13TruvideoVideo16MergeAudioTracks")
+@interface MergeAudioTracks : NSObject
+- (nonnull instancetype)initWithEntryIndex:(NSNumber * _Nonnull)entryIndex fileIndex:(NSNumber * _Nonnull)fileIndex OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_CLASS("_TtC13TruvideoVideo16MergeVideoTracks")
+@interface MergeVideoTracks : NSObject
+- (nonnull instancetype)initWithEntryIndex:(NSNumber * _Nonnull)entryIndex width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height fileIndex:(NSNumber * _Nonnull)fileIndex OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class NSURL;
 
 SWIFT_CLASS("_TtC13TruvideoVideo16ThumbnailRequest")
 @interface ThumbnailRequest : NSObject
@@ -313,22 +329,54 @@ SWIFT_CLASS("_TtC13TruvideoVideo16ThumbnailRequest")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
-@class UIViewController;
+enum VideoRequestStatus : NSInteger;
+@class NSArray;
+@class NSError;
 @class NSString;
+@class NSDictionary;
+@class UIViewController;
+enum VideoFrameRate : NSInteger;
 
 SWIFT_CLASS("_TtC13TruvideoVideo16TruvideoVideoSdk")
 @interface TruvideoVideoSdk : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) TruvideoVideoSdk * _Nonnull shared;)
 + (TruvideoVideoSdk * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
 - (void)generateThumbnailWithRequest:(ThumbnailRequest * _Nonnull)request completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
+- (void)getAllRequestObjCWithStatus:(enum VideoRequestStatus)withStatus completion:(void (^ _Nonnull)(NSArray * _Nullable, NSError * _Nullable))completion;
+- (void)streamRequestsObjCWithStatus:(enum VideoRequestStatus)withStatus completion:(void (^ _Nonnull)(NSArray * _Nullable, NSError * _Nullable))completion;
+- (void)streamRequestsWithId:(NSString * _Nonnull)withId completion:(void (^ _Nonnull)(NSDictionary * _Nullable, NSError * _Nullable))completion;
 - (void)editVideoWithInput:(NSURL * _Nonnull)input output:(NSURL * _Nonnull)output viewController:(UIViewController * _Nonnull)viewController completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
 - (void)concatVideosWithInput:(NSArray<NSURL *> * _Nonnull)input output:(NSURL * _Nonnull)output completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
-- (void)mergeVideosWithInput:(NSArray<NSURL *> * _Nonnull)input output:(NSURL * _Nonnull)output width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height frameRate:(NSString * _Nonnull)frameRate completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
-- (void)encodeVideoWithInput:(NSURL * _Nonnull)input output:(NSURL * _Nonnull)output width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height frameRate:(NSString * _Nonnull)frameRate completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
+- (void)mergeVideosWithInput:(NSArray<NSURL *> * _Nonnull)input output:(NSURL * _Nonnull)output width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height frameRate:(enum VideoFrameRate)frameRate completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
+- (void)encodeVideoWithInput:(NSURL * _Nonnull)input output:(NSURL * _Nonnull)output width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height frameRate:(enum VideoFrameRate)frameRate completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
 - (void)compareVideosWithInput:(NSArray<NSURL *> * _Nonnull)input completion:(void (^ _Nonnull)(BOOL, NSError * _Nullable))completion;
 - (void)clearNoiseWithInput:(NSURL * _Nonnull)input output:(NSURL * _Nonnull)output completion:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completion;
 - (void)getVideoInfoWithInput:(NSURL * _Nonnull)input completion:(void (^ _Nonnull)(NSArray<NSDictionary<NSString *, id> *> * _Nullable, NSError * _Nullable))completion;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+typedef SWIFT_ENUM(NSInteger, VideoFrameRate, open) {
+  VideoFrameRateTwentyFourFps = 0,
+  VideoFrameRateTwentyFiveFps = 1,
+  VideoFrameRateThirtyFps = 2,
+  VideoFrameRateFiftyFps = 3,
+  VideoFrameRateSixtyFps = 4,
+};
+
+typedef SWIFT_ENUM(NSInteger, VideoRequestStatus, open) {
+  VideoRequestStatusCancelled = 0,
+  VideoRequestStatusError = 1,
+  VideoRequestStatusIdle = 2,
+  VideoRequestStatusProcessing = 3,
+  VideoRequestStatusComplete = 4,
+};
+
+
+SWIFT_CLASS("_TtC13TruvideoVideo11VideoTracks")
+@interface VideoTracks : NSObject
+- (nonnull instancetype)initWithEntryIndex:(NSNumber * _Nonnull)entryIndex width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
 #endif

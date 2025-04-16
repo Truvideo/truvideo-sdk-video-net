@@ -2,13 +2,15 @@ import Foundation
 import TruvideoSdkVideo
 import CommonCrypto
 import UIKit
+import Combine
 
 @objc
 final public class TruvideoVideoSdk: NSObject {
     
     @objc
     public static let shared = TruvideoVideoSdk()
-    
+    private var cancellables = Set<AnyCancellable>()
+
     private func createError(_ message: String, code: Int = -1) -> NSError {
         return NSError(domain: "TruvideoVideoSdkError", code: code, userInfo: [NSLocalizedDescriptionKey: message])
     }
@@ -24,6 +26,166 @@ final public class TruvideoVideoSdk: NSObject {
             } catch {
                 completion(nil, createError("Failed to generate thumbnail: \(error.localizedDescription)"))
             }
+        }
+    }
+    
+    @objc
+    public func getAllRequestObjC(withStatus: VideoRequestStatus, completion: @escaping (_ result: NSArray?, _ error: NSError?) -> Void) {
+        guard let status = convertMediaStatusToTruvideoStatus(withStatus) as? TruvideoSdkVideoRequest.Status else {
+            completion(nil, NSError(domain: "Invalid status", code: -1, userInfo: nil))
+            return
+        }
+
+        Task {
+            do {
+                let requests = try TruvideoSdkVideo.getRequests(withStatus: status)
+                let array = requests.map { request in
+                    return [
+                        "id": request.id.uuidString,
+                        "status": "\(request.status)",
+                        "type": "\(request.type)"
+                    ] as NSDictionary
+                }
+                completion(array as NSArray, nil)
+            } catch {
+                completion(nil, error as NSError)
+            }
+        }
+    }
+    
+    func process(id: String){
+        let requestId = TruvideoSdkVideo
+        
+    }
+
+    
+    @objc
+    public func streamRequestsObjC(withStatus: VideoRequestStatus, completion: @escaping (_ result: NSArray?, _ error: NSError?) -> Void) {
+        guard let status = convertMediaStatusToTruvideoStatus(withStatus) as? TruvideoSdkVideoRequest.Status else {
+            completion(nil, NSError(domain: "Invalid status", code: -1, userInfo: nil))
+            return
+        }
+
+        TruvideoSdkVideo.streamRequests(withStatus: status)
+            .sink(receiveCompletion: { result in
+                if case .failure(let error) = result {
+                    completion(nil, error as NSError)
+                }
+            }, receiveValue: { requests in
+                let array = requests.map { request in
+                    return [
+                        "id": request.id.uuidString,
+                        "status": "\(request.status)",
+                        "type": "\(request.type)"
+                    ] as NSDictionary
+                }
+                completion(array as NSArray, nil)
+            })
+            .store(in: &cancellables)
+    }
+
+
+    
+    @objc
+    public func streamRequests(withId: String, completion: @escaping (_ result: NSDictionary?, _ error: NSError?) -> Void) {
+        
+        Task{
+            do{
+                guard let uuid = UUID(uuidString: withId) else {
+                    completion(nil, NSError(domain: "Invalid UUID", code: -1, userInfo: nil))
+                    return
+                }
+
+               try TruvideoSdkVideo.streamRequest(withId: uuid)
+                    .sink(receiveCompletion: { result in
+                        if case .failure(let error) = result {
+                            completion(nil, error as NSError)
+                        }
+                    }, receiveValue: { videoRequest in
+                        var dict: [String: Any] = [
+                            "id": videoRequest.id.uuidString,
+                            "status": "\(videoRequest.status)",
+                            "type": "\(videoRequest.type)",
+                            "createdAt": videoRequest.createdAt.description,
+                            "updatedAt": videoRequest.updatedAt.description,
+                        ]
+
+                        if let errorMessage = videoRequest.errorMessage {
+                            dict["errorMessage"] = errorMessage
+                        }
+
+                        if let outputPath = videoRequest.outputPath {
+                            dict["outputPath"] = outputPath.absoluteString
+                        }
+                        let output = videoRequest.output
+                        dict["output"] = "\(output)" // fallback text representation
+
+                        if let encodingData = videoRequest.encodingData {
+                            var enc: [String: Any] = [
+                                "inputFileURL": encodingData.inputFileURL.absoluteString,
+                                "videoTracksCount": encodingData.videoTracks.count,
+                                "audioTracksCount": encodingData.audioTracks.count,
+                                "framesRate": "\(encodingData.framesRate)"
+                            ]
+                            if let width = encodingData.width {
+                                enc["width"] = width
+                            }
+                            if let height = encodingData.height {
+                                enc["height"] = height
+                            }
+                            dict["encodingData"] = enc
+                        }
+                      
+                        if let mergeData = videoRequest.mergeData {
+                            var merge: [String: Any] = [
+                                "videos": mergeData.videos.map { $0.absoluteString },
+                                "framesRate": "\(mergeData.framesRate)",
+                                "videoTracksCount": mergeData.videoTracks.count,
+                                "audioTracksCount": mergeData.audioTracks.count
+                            ]
+                            
+                            if let width = mergeData.width {
+                                merge["width"] = width
+                            }
+                            if let height = mergeData.height {
+                                merge["height"] = height
+                            }
+
+                            dict["mergeData"] = merge
+                        }
+                        if let concatData = videoRequest.concatData {
+                            let concat: [String: Any] = [
+                                "videos": concatData.videos.map { $0.absoluteString },
+                                "videoCount": concatData.videos.count
+                            ]
+                            dict["concatData"] = concat
+                        }
+                        completion(dict as NSDictionary, nil)
+                    })
+                    .store(in: &cancellables)
+            }
+            catch{
+                completion(nil,error as NSError)
+            }
+        }
+    }
+
+    private func convertMediaStatusToTruvideoStatus(_ status: VideoRequestStatus) -> TruvideoSdkVideoRequest.Status {
+        switch status {
+        case .processing:
+            return .processing
+     
+        case .cancelled:
+            return .cancelled
+        
+        case .error:
+            return .error
+            
+        case .idle:
+            return .idle
+            
+        case .complete:
+            return .complete
         }
     }
     
@@ -61,7 +223,7 @@ final public class TruvideoVideoSdk: NSObject {
     }
     
     @objc
-    public func mergeVideos(input: [URL], output: URL, width: NSNumber?, height: NSNumber?, frameRate: String,completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
+    public func mergeVideos(input: [URL], output: URL, width: NSNumber?, height: NSNumber?, frameRate: VideoFrameRate, completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
         Task {
             do {
                 let inputPaths = input.map { TruvideoSdkVideoFile(url: $0) }
@@ -69,27 +231,61 @@ final public class TruvideoVideoSdk: NSObject {
                 let builder = TruvideoSdkVideo.MergeBuilder(input: inputPaths, output: outputPath)
                 builder.width = CGFloat(width?.intValue ?? 0)
                 builder.height = CGFloat(height?.intValue ?? 0)
-                builder.framesRate = convertStringToFramerate(frameRate)
+                builder.framesRate = convertFramerate(frameRate)
                 let result = try await builder.build().process()
                 completion(result.videoURL, nil)
-                
             } catch {
                 completion(nil, createError("Failed to merge videos: \(error.localizedDescription)"))
             }
         }
     }
     
+    
+    private func convertAudioTracksToTruvideoMergeTracks(_ videoTracks: [MergeAudioTracks]) -> [TruvideoSdkVideoMergeAudioTrack] {
+        let mediaEntries = videoTracks.map {
+            TruvideoSdkVideoMergeMediaEntry(
+                fileIndex: $0.fileIndex.intValue,
+                entryIndex: $0.entryIndex.intValue
+            )
+        }
+
+
+        let mergeTrack = TruvideoSdkVideoMergeAudioTrack(tracks: mediaEntries)
+
+        return [mergeTrack]
+    }
+    
+    private func convertVideoTracksToTruvideoMergeTracks(_ videoTracks: [MergeVideoTracks]) -> [TruvideoSdkVideoMergeVideoTrack] {
+        let mediaEntries = videoTracks.map {
+            TruvideoSdkVideoMergeMediaEntry(
+                fileIndex: $0.fileIndex.intValue,
+                entryIndex: $0.entryIndex.intValue
+            )
+        }
+
+        // Optional width and height — use first valid one if exists
+        let width = videoTracks.first(where: { $0.width != nil })?.width?.intValue
+        let height = videoTracks.first(where: { $0.height != nil })?.height?.intValue
+
+        let mergeTrack = TruvideoSdkVideoMergeVideoTrack(
+            tracks: mediaEntries,
+            width: width,
+            height: height
+        )
+
+        return [mergeTrack]
+    }
+
     @objc
-    public func encodeVideo( input: URL, output: URL, width: NSNumber?, height: NSNumber?, frameRate: String,completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
+    public func encodeVideo( input: URL, output: URL, width: NSNumber?, height: NSNumber?, frameRate: VideoFrameRate,completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
         Task {
             do {
-                
                 let inputPath = TruvideoSdkVideoFile(url: input)
                 let outputPath = TruvideoSdkVideoFileDescriptor.files(fileName: output.lastPathComponent)
                 let builder = TruvideoSdkVideo.EncodingBuilder(input: inputPath, output: outputPath)
                 builder.width = CGFloat(width?.intValue ?? 0)
                 builder.height = CGFloat(height?.intValue ?? 0)
-                builder.framesRate = convertStringToFramerate(frameRate)
+                builder.framesRate = convertFramerate(frameRate)
                 let result = try await builder.build().process()
                 completion(result.videoURL, nil)
                 
@@ -98,6 +294,17 @@ final public class TruvideoVideoSdk: NSObject {
             }
         }
     }
+    
+    private func convertVideoTracksTOTruvideVideoTracks(_ videoTracks: [VideoTracks]) -> [TruvideoSdkVideoEncodeVideoEntry] {
+        return videoTracks.map { track in
+            TruvideoSdkVideoEncodeVideoEntry(
+                entryIndex: track.entryIndex.intValue,
+                width: track.width?.intValue,
+                height: track.height?.intValue
+            )
+        }
+    }
+
     
     @objc
     public func compareVideos(input: [URL],completion: @escaping (_ result: Bool, _ error: Error?) -> Void)  {
@@ -183,13 +390,13 @@ final public class TruvideoVideoSdk: NSObject {
     }
 
     
-    func convertStringToFramerate(_ frameRate: String) -> TruvideoSdkVideoFrameRate {
+    func convertFramerate(_ frameRate: VideoFrameRate) -> TruvideoSdkVideoFrameRate {
         switch frameRate {
-        case "24": return .twentyFourFps
-        case "25": return .twentyFiveFps
-        case "30": return .thirtyFps
-        case "50": return .fiftyFps
-        case "60": return .sixtyFps
+        case .twentyFourFps : return .twentyFourFps
+        case .twentyFiveFps : return .twentyFiveFps
+        case .thirtyFps : return .thirtyFps
+        case .fiftyFps : return .fiftyFps
+        case .sixtyFps : return .sixtyFps
         default: return .twentyFourFps
         }
     }
@@ -212,3 +419,62 @@ final public class TruvideoVideoSdk: NSObject {
     var height: NSNumber?
     var outputURL: URL
 }
+
+@objc public class VideoTracks: NSObject{
+    
+    @objc public init(entryIndex: NSNumber, width: NSNumber? = nil, height: NSNumber? = nil){
+        self.entryIndex = entryIndex
+        self.width = width
+        self.height = height
+        
+    }
+    
+    var entryIndex: NSNumber
+    var width: NSNumber?
+    var height: NSNumber?
+}
+
+
+@objc public class MergeVideoTracks: NSObject{
+    
+    @objc public init(entryIndex: NSNumber, width: NSNumber? = nil, height: NSNumber? = nil,fileIndex : NSNumber){
+        self.entryIndex = entryIndex
+        self.width = width
+        self.height = height
+        self.fileIndex = fileIndex
+    }
+    
+    var fileIndex: NSNumber
+    var entryIndex: NSNumber
+    var width: NSNumber?
+    var height: NSNumber?
+}
+
+@objc public class MergeAudioTracks: NSObject{
+    
+    @objc public init(entryIndex: NSNumber,fileIndex : NSNumber){
+        self.entryIndex = entryIndex
+        self.fileIndex = fileIndex
+    }
+    
+    var fileIndex: NSNumber
+    var entryIndex: NSNumber
+}
+
+
+@objc public enum VideoRequestStatus: Int {
+    case cancelled
+    case error
+    case idle
+    case processing
+    case complete
+}
+
+@objc public enum VideoFrameRate: Int {
+    case twentyFourFps
+    case twentyFiveFps
+    case thirtyFps
+    case fiftyFps
+    case sixtyFps
+}
+
