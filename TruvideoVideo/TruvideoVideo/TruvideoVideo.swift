@@ -53,12 +53,6 @@ final public class TruvideoVideoSdk: NSObject {
         }
     }
     
-    func process(id: String){
-        let requestId = TruvideoSdkVideo
-        
-    }
-
-    
     @objc
     public func streamRequestsObjC(withStatus: VideoRequestStatus, completion: @escaping (_ result: NSArray?, _ error: NSError?) -> Void) {
         guard let status = convertMediaStatusToTruvideoStatus(withStatus) as? TruvideoSdkVideoRequest.Status else {
@@ -207,14 +201,14 @@ final public class TruvideoVideoSdk: NSObject {
     }
     
     @objc
-    public func concatVideos(input: [URL], output: URL, completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
+    public func concatVideos(input: [URL], output: URL, completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void)  {
         Task {
             do {
                 
                 let inputPaths = input.map { TruvideoSdkVideoFile(url: $0) }
                 let outputPath = TruvideoSdkVideoFileDescriptor.files(fileName: output.lastPathComponent)
-                let result = try await TruvideoSdkVideo.ConcatBuilder(input: inputPaths, output: outputPath).build().process()
-                completion(result.videoURL, nil)
+                let result = TruvideoSdkVideo.ConcatBuilder(input: inputPaths, output: outputPath).build()
+                completion(result.videoRequest, nil)
                 
             } catch {
                 completion(nil, createError("Failed to concatenate videos: \(error.localizedDescription)"))
@@ -222,8 +216,9 @@ final public class TruvideoVideoSdk: NSObject {
         }
     }
     
+    
     @objc
-    public func mergeVideos(input: [URL], output: URL, width: NSNumber?, height: NSNumber?, frameRate: VideoFrameRate, completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
+    public func mergeVideos(input: [URL], output: URL, width: NSNumber?, height: NSNumber?, frameRate: VideoFrameRate, completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void)  {
         Task {
             do {
                 let inputPaths = input.map { TruvideoSdkVideoFile(url: $0) }
@@ -232,13 +227,14 @@ final public class TruvideoVideoSdk: NSObject {
                 builder.width = CGFloat(width?.intValue ?? 0)
                 builder.height = CGFloat(height?.intValue ?? 0)
                 builder.framesRate = convertFramerate(frameRate)
-                let result = try await builder.build().process()
-                completion(result.videoURL, nil)
+                let result = builder.build()
+                completion(result.videoRequest, nil)
             } catch {
                 completion(nil, createError("Failed to merge videos: \(error.localizedDescription)"))
             }
         }
     }
+    
     
     
     private func convertAudioTracksToTruvideoMergeTracks(_ videoTracks: [MergeAudioTracks]) -> [TruvideoSdkVideoMergeAudioTrack] {
@@ -277,7 +273,7 @@ final public class TruvideoVideoSdk: NSObject {
     }
 
     @objc
-    public func encodeVideo( input: URL, output: URL, width: NSNumber?, height: NSNumber?, frameRate: VideoFrameRate,completion: @escaping (_ result: URL?, _ error: Error?) -> Void)  {
+    public func encodeVideo( input: URL, output: URL, width: NSNumber?, height: NSNumber?, frameRate: VideoFrameRate,completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void)  {
         Task {
             do {
                 let inputPath = TruvideoSdkVideoFile(url: input)
@@ -286,8 +282,8 @@ final public class TruvideoVideoSdk: NSObject {
                 builder.width = CGFloat(width?.intValue ?? 0)
                 builder.height = CGFloat(height?.intValue ?? 0)
                 builder.framesRate = convertFramerate(frameRate)
-                let result = try await builder.build().process()
-                completion(result.videoURL, nil)
+                let result = builder.build()
+                completion(result.videoRequest, nil)
                 
             } catch {
                 completion(nil, createError("Failed to encode video: \(error.localizedDescription)"))
@@ -336,7 +332,67 @@ final public class TruvideoVideoSdk: NSObject {
             }
         }
     }
+
+    @objc public func getRequestById(id : String,completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void){
+      var cancellables = Set<AnyCancellable>()
+      do {
+        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
+        //let dateFormatter = ISO8601DateFormatter()
+          publisher
+              .sink { videoRequest in
+                  completion(videoRequest.videoRequest,nil)
+                cancellables.removeAll()
+              }
+              .store(in: &cancellables)
+      } catch {
+          completion(nil,error)
+          print("Failed to create publisher:", error)
+      }
+    }
     
+    @objc public func cancel(id : String,completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void){
+      var cancellables = Set<AnyCancellable>()
+      do {
+        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
+          publisher
+              .sink { videoRequest in
+                do {
+                  try videoRequest.cancel()
+                    completion(videoRequest.videoRequest, nil)
+                  cancellables.removeAll()
+                }catch{
+                 completion(nil, error)
+                }
+              }
+              .store(in: &cancellables)
+      } catch {
+          completion(nil,error)
+          print("Failed to create publisher:", error)
+      }
+    }
+    
+    @objc public func process(id : String, completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void){
+      var cancellables = Set<AnyCancellable>()
+      do {
+        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
+          publisher
+              .sink { videoRequest in
+                Task{
+                  do {
+                    let _ = try await videoRequest.process()
+                      completion(videoRequest.videoRequest,nil)
+                    cancellables.removeAll()
+                  }catch{
+                    completion(nil,error)
+                  }
+                }
+              }
+              .store(in: &cancellables)
+      } catch {
+          completion(nil,error)
+          print("Failed to create publisher:", error)
+      }
+    }
     @objc
     public func getVideoInfo(input: URL, completion: @escaping (_ response: [[String: Any]]?, _ error: Error?) -> Void) {
         Task {
@@ -478,3 +534,85 @@ final public class TruvideoVideoSdk: NSObject {
     case sixtyFps
 }
 
+extension TruvideoSdkVideoRequest{
+    var videoRequest:TruvideoVideoSdkRequest{
+        TruvideoVideoSdkRequest(id: id as NSUUID,
+                                type: convertTruvideoTypeToVideoRequestType(type),
+                                status: convertMediaStatusToTruvideoStatus(status),
+                                createdAt: createdAt,
+                                updatedAt: updatedAt,
+                                errorMessage: errorMessage,
+                                outputPath: outputPath
+        )
+        
+    }
+    
+    private func convertTruvideoTypeToVideoRequestType(_ truvideoType: TruvideoSdkVideo.TruvideoSdkVideoRequest.`Type`) -> VideoRequestType {
+        switch truvideoType {
+        case .encode:
+            return .encode
+        case .merge:
+            return .merge
+        case .concat:
+            return .concat
+        default:
+            return .concat
+        }
+    }
+    
+    private func convertMediaStatusToTruvideoStatus(_ status: TruvideoSdkVideoRequest.Status) ->  VideoRequestStatus{
+        switch status {
+        case .processing:
+            return .processing
+     
+        case .cancelled:
+            return .cancelled
+        
+        case .error:
+            return .error
+            
+        case .idle:
+            return .idle
+            
+        case .complete:
+            return .complete
+        @unknown default:
+            return .idle
+        }
+    }
+}
+
+@objc public class TruvideoVideoSdkRequest: NSObject{
+    
+    internal init(
+        id: NSUUID,
+        type: VideoRequestType ,
+        status: VideoRequestStatus,
+        createdAt: Date? = nil,
+        updatedAt: Date = Date(),
+        errorMessage: String? = nil,
+        outputPath: URL? = nil,
+    ) {
+        self.id = id
+        self.type = type
+        self.status = status
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.errorMessage = errorMessage
+        self.outputPath = outputPath
+    }
+    
+    @objc public let id: NSUUID
+    @objc public let type: VideoRequestType
+    @objc public let status: VideoRequestStatus
+    @objc public let createdAt: Date?
+    @objc public let updatedAt: Date
+    @objc public let errorMessage: String?
+    @objc public let outputPath: URL?
+}
+
+@objc public enum VideoRequestType: Int {
+    case encode
+    case merge
+    case concat
+}

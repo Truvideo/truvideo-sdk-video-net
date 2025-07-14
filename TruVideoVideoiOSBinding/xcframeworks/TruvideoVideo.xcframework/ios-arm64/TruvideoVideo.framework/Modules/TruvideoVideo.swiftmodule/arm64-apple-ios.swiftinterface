@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
-// swift-module-flags: -target arm64-apple-ios17.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name TruvideoVideo
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-module-flags: -target arm64-apple-ios17.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name TruvideoVideo
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -interface-compiler-version 6.1.2
 import Combine
 import CommonCrypto
 import Foundation
@@ -19,11 +19,14 @@ import _SwiftConcurrencyShims
   @objc final public func streamRequestsObjC(withStatus: TruvideoVideo.VideoRequestStatus, completion: @escaping (_ result: Foundation.NSArray?, _ error: Foundation.NSError?) -> Swift.Void)
   @objc final public func streamRequests(withId: Swift.String, completion: @escaping (_ result: Foundation.NSDictionary?, _ error: Foundation.NSError?) -> Swift.Void)
   @objc final public func editVideo(input: Foundation.URL, output: Foundation.URL, viewController: UIKit.UIViewController, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
-  @objc final public func concatVideos(input: [Foundation.URL], output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
-  @objc final public func mergeVideos(input: [Foundation.URL], output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
-  @objc final public func encodeVideo(input: Foundation.URL, output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func concatVideos(input: [Foundation.URL], output: Foundation.URL, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func mergeVideos(input: [Foundation.URL], output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func encodeVideo(input: Foundation.URL, output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func compareVideos(input: [Foundation.URL], completion: @escaping (_ result: Swift.Bool, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func clearNoise(input: Foundation.URL, output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func getRequestById(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func cancel(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  @objc final public func process(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc final public func getVideoInfo(input: Foundation.URL, completion: @escaping (_ response: [[Swift.String : Any]]?, _ error: (any Swift.Error)?) -> Swift.Void)
   @objc override dynamic public init()
   @objc deinit
@@ -68,9 +71,32 @@ import _SwiftConcurrencyShims
     get
   }
 }
+@_hasMissingDesignatedInitializers @objc public class TruvideoVideoSdkRequest : ObjectiveC.NSObject {
+  @objc final public let id: Foundation.NSUUID
+  @objc final public let type: TruvideoVideo.VideoRequestType
+  @objc final public let status: TruvideoVideo.VideoRequestStatus
+  @objc final public let createdAt: Foundation.Date?
+  @objc final public let updatedAt: Foundation.Date
+  @objc final public let errorMessage: Swift.String?
+  @objc final public let outputPath: Foundation.URL?
+  @objc deinit
+}
+@objc public enum VideoRequestType : Swift.Int {
+  case encode
+  case merge
+  case concat
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
 extension TruvideoVideo.VideoRequestStatus : Swift.Equatable {}
 extension TruvideoVideo.VideoRequestStatus : Swift.Hashable {}
 extension TruvideoVideo.VideoRequestStatus : Swift.RawRepresentable {}
 extension TruvideoVideo.VideoFrameRate : Swift.Equatable {}
 extension TruvideoVideo.VideoFrameRate : Swift.Hashable {}
 extension TruvideoVideo.VideoFrameRate : Swift.RawRepresentable {}
+extension TruvideoVideo.VideoRequestType : Swift.Equatable {}
+extension TruvideoVideo.VideoRequestType : Swift.Hashable {}
+extension TruvideoVideo.VideoRequestType : Swift.RawRepresentable {}
