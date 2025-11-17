@@ -277,6 +277,9 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
+@import Foundation;
+@import ObjectiveC;
+@import UIKit;
 #endif
 
 #endif
@@ -298,8 +301,188 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 #if defined(__OBJC__)
 
+@class TruvideoSdkVideoRequest;
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo13ConcatBuilder")
+@interface ConcatBuilder : NSObject
+- (TruvideoSdkVideoRequest * _Nullable)buildAndReturnError:(NSError * _Nullable * _Nullable)error SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
+SWIFT_CLASS("_TtC16TruvideoSdkVideo15EncodingBuilder")
+@interface EncodingBuilder : NSObject
+- (TruvideoSdkVideoRequest * _Nonnull)build SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo12MergeBuilder")
+@interface MergeBuilder : NSObject
+- (TruvideoSdkVideoRequest * _Nullable)buildAndReturnError:(NSError * _Nullable * _Nullable)error SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+typedef SWIFT_ENUM(NSInteger, NSTruvideoSdkVideoFileDescriptor, open) {
+  NSTruvideoSdkVideoFileDescriptorCache = 0,
+  NSTruvideoSdkVideoFileDescriptorFiles = 1,
+  NSTruvideoSdkVideoFileDescriptorCustom = 2,
+};
+
+enum Status : NSInteger;
+@protocol TruvideoSdkVideoAppDelegate;
+@class TruvideoSdkVideoFile;
+@class TruvideoSdkVideoInformation;
+@class NSError;
+@class NSString;
+@class NSNumber;
+@class TruvideoSdkVideoThumbnailResult;
+
+SWIFT_PROTOCOL("_TtP16TruvideoSdkVideo27NSTruvideoSdkVideoInterface_")
+@protocol NSTruvideoSdkVideoInterface
+- (NSArray<TruvideoSdkVideoRequest *> * _Nullable)getRequestsWithStatus:(enum Status)status error:(NSError * _Nullable * _Nullable)error SWIFT_WARN_UNUSED_RESULT;
+- (void)configureTruvideoSdkAppDelegate:(id <TruvideoSdkVideoAppDelegate> _Nonnull)appDelegate;
+- (void)getVideoInformationWithCompletion:(TruvideoSdkVideoFile * _Nonnull)input completion:(void (^ _Nonnull)(TruvideoSdkVideoInformation * _Nullable, NSError * _Nullable))completion;
+- (void)generateThumbnailWithCompletion:(TruvideoSdkVideoFile * _Nonnull)input outputPath:(NSString * _Nonnull)outputPath outputDescriptor:(enum NSTruvideoSdkVideoFileDescriptor)outputDescriptor position:(NSNumber * _Nonnull)position width:(NSNumber * _Nullable)width height:(NSNumber * _Nullable)height completion:(void (^ _Nonnull)(TruvideoSdkVideoThumbnailResult * _Nullable, NSError * _Nullable))completion;
+- (void)canConcatWithCompletion:(NSArray<TruvideoSdkVideoFile *> * _Nonnull)input completion:(void (^ _Nonnull)(NSNumber * _Nullable, NSError * _Nullable))completion;
+- (MergeBuilder * _Nonnull)MergeBuilderWithInput:(NSArray<TruvideoSdkVideoFile *> * _Nonnull)input outputPath:(NSString * _Nonnull)outputPath outputDescriptor:(enum NSTruvideoSdkVideoFileDescriptor)outputDescriptor SWIFT_WARN_UNUSED_RESULT;
+- (ConcatBuilder * _Nonnull)ConcatBuilderWithInput:(NSArray<TruvideoSdkVideoFile *> * _Nonnull)input outputPath:(NSString * _Nonnull)outputPath outputDescriptor:(enum NSTruvideoSdkVideoFileDescriptor)outputDescriptor SWIFT_WARN_UNUSED_RESULT;
+- (EncodingBuilder * _Nonnull)EncodingBuilderWithInput:(TruvideoSdkVideoFile * _Nonnull)input outputPath:(NSString * _Nonnull)outputPath outputDescriptor:(enum NSTruvideoSdkVideoFileDescriptor)outputDescriptor SWIFT_WARN_UNUSED_RESULT;
+@end
+
+@class UIApplication;
+@class UIWindow;
+
+SWIFT_PROTOCOL("_TtP16TruvideoSdkVideo27TruvideoSdkVideoAppDelegate_")
+@protocol TruvideoSdkVideoAppDelegate <UIApplicationDelegate>
+@property (nonatomic) UIInterfaceOrientationMask orientationLock;
+- (UIInterfaceOrientationMask)application:(UIApplication * _Nonnull)application supportedInterfaceOrientationsForWindow:(UIWindow * _Nullable)window SWIFT_WARN_UNUSED_RESULT;
+@end
+
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo37TruvideoSdkVideoAudioTrackInformation")
+@interface TruvideoSdkVideoAudioTrackInformation : NSObject
+@property (nonatomic, readonly) NSInteger index;
+@property (nonatomic, readonly, copy) NSString * _Nonnull codec;
+@property (nonatomic, readonly, copy) NSString * _Nonnull codecTag;
+@property (nonatomic, readonly, copy) NSString * _Nonnull sampleFormat;
+@property (nonatomic, readonly) NSInteger bitRate;
+@property (nonatomic, readonly) NSInteger sampleRate;
+@property (nonatomic, readonly) NSInteger channels;
+@property (nonatomic, readonly, copy) NSString * _Nonnull channelLayout;
+@property (nonatomic, readonly) int64_t durationMillis;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class NSURL;
+
+/// Result for the trimming action
+SWIFT_CLASS("_TtC16TruvideoSdkVideo28TruvideoSdkVideoEditorResult")
+@interface TruvideoSdkVideoEditorResult : NSObject
+@property (nonatomic, readonly, copy) NSURL * _Nullable editedVideoURL;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo20TruvideoSdkVideoFile")
+@interface TruvideoSdkVideoFile : NSObject
++ (TruvideoSdkVideoFile * _Nonnull)instantiateWithUrl:(NSURL * _Nonnull)url SWIFT_WARN_UNUSED_RESULT;
++ (TruvideoSdkVideoFile * _Nullable)instantiateWithPath:(NSString * _Nonnull)path error:(NSError * _Nullable * _Nullable)error SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class TruvideoSdkVideoTrackInformation;
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo27TruvideoSdkVideoInformation")
+@interface TruvideoSdkVideoInformation : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull path;
+@property (nonatomic, readonly) int64_t size;
+@property (nonatomic, readonly) int64_t durationMillis;
+@property (nonatomic, readonly, copy) NSString * _Nonnull format;
+@property (nonatomic, readonly, copy) NSArray<TruvideoSdkVideoTrackInformation *> * _Nonnull videoTracks;
+@property (nonatomic, readonly, copy) NSArray<TruvideoSdkVideoAudioTrackInformation *> * _Nonnull audioTracks;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo24TruvideoSdkVideoProvider")
+@interface TruvideoSdkVideoProvider : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id <NSTruvideoSdkVideoInterface> _Nonnull shared;)
++ (id <NSTruvideoSdkVideoInterface> _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class Result;
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo23TruvideoSdkVideoRequest")
+@interface TruvideoSdkVideoRequest : NSObject
+- (BOOL)cancelAndReturnError:(NSError * _Nullable * _Nullable)error;
+- (void)processWithCompletionWithCompletion:(void (^ _Nonnull)(Result * _Nullable, NSError * _Nullable))completion;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+typedef SWIFT_ENUM(NSInteger, Status, open) {
+  StatusProcessing = 0,
+  StatusError = 1,
+  StatusCancelled = 2,
+  StatusComplete = 3,
+  StatusIdle = 4,
+};
+
+
+SWIFT_CLASS("_TtCC16TruvideoSdkVideo23TruvideoSdkVideoRequest6Result")
+@interface Result : NSObject
+@property (nonatomic, readonly, copy) NSURL * _Nonnull videoURL;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+/// The result of the thumbnail generation
+SWIFT_CLASS("_TtC16TruvideoSdkVideo31TruvideoSdkVideoThumbnailResult")
+@interface TruvideoSdkVideoThumbnailResult : NSObject
+/// URL of the generated thumbnail
+@property (nonatomic, readonly, copy) NSURL * _Nonnull generatedThumbnailURL;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_CLASS("_TtC16TruvideoSdkVideo32TruvideoSdkVideoTrackInformation")
+@interface TruvideoSdkVideoTrackInformation : NSObject
+@property (nonatomic, readonly) NSInteger index;
+@property (nonatomic, readonly) NSInteger width;
+@property (nonatomic, readonly) NSInteger height;
+@property (nonatomic, readonly) NSInteger rotatedWidth;
+@property (nonatomic, readonly) NSInteger rotatedHeight;
+@property (nonatomic, readonly, copy) NSString * _Nonnull codec;
+@property (nonatomic, readonly, copy) NSString * _Nonnull codecTag;
+@property (nonatomic, readonly, copy) NSString * _Nonnull pixelFormat;
+@property (nonatomic, readonly) NSInteger bitRate;
+@property (nonatomic, readonly, copy) NSString * _Nonnull frameRate;
+@property (nonatomic, readonly) NSInteger rotation;
+@property (nonatomic, readonly) int64_t durationMillis;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+@interface UIViewController (SWIFT_EXTENSION(TruvideoSdkVideo))
+- (void)presentTruvideoSdkVideoEditorViewWithInput:(TruvideoSdkVideoFile * _Nonnull)input outputPath:(NSString * _Nonnull)outputPath outputDescriptor:(enum NSTruvideoSdkVideoFileDescriptor)outputDescriptor onComplete:(void (^ _Nonnull)(TruvideoSdkVideoEditorResult * _Nonnull))onComplete;
+@end
 
 #endif
 #if __has_attribute(external_source_symbol)

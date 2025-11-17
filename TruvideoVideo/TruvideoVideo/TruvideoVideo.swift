@@ -207,7 +207,7 @@ final public class TruvideoVideoSdk: NSObject {
                 
                 let inputPaths = input.map { TruvideoSdkVideoFile(url: $0) }
                 let outputPath = TruvideoSdkVideoFileDescriptor.files(fileName: output.lastPathComponent)
-                let result = TruvideoSdkVideo.ConcatBuilder(input: inputPaths, output: outputPath).build()
+                let result = try TruvideoSdkVideo.ConcatBuilder(input: inputPaths, output: outputPath).build()
                 completion(result.videoRequest, nil)
                 
             } catch {
@@ -227,7 +227,7 @@ final public class TruvideoVideoSdk: NSObject {
                 builder.width = CGFloat(width?.intValue ?? 0)
                 builder.height = CGFloat(height?.intValue ?? 0)
                 builder.framesRate = convertFramerate(frameRate)
-                let result = builder.build()
+                let result = try builder.build()
                 completion(result.videoRequest, nil)
             } catch {
                 completion(nil, createError("Failed to merge videos: \(error.localizedDescription)"))
@@ -394,51 +394,85 @@ final public class TruvideoVideoSdk: NSObject {
       }
     }
     @objc
-    public func getVideoInfo(input: URL, completion: @escaping (_ response: [[String: Any]]?, _ error: Error?) -> Void) {
+    public func getVideoInfo(input: URL, completion: @escaping (_ response: [String: Any]?, _ error: Error?) -> Void) {
         Task {
             do {
                 let inputPath: TruvideoSdkVideoFile = .init(url: input)
-                let result = try await TruvideoSdkVideo.getVideosInformation(input: [inputPath])
+                let result = try await TruvideoSdkVideo.getVideoInformation(input: .init(url: input))
+                let newResult: [String: Any] = [
+                    "path": result.path,
+                    "size": result.size,
+                    "durationMillis": result.durationMillis,
+                    "format": result.format,
+                    "videos": result.videoTracks.map { video in
+                        return [
+                            "index": video.index,
+                            "width": video.width,
+                            "height": video.height,
+                            "rotatedWidth": video.rotatedWidth,
+                            "rotatedHeight": video.rotatedHeight,
+                            "codec": video.codec,
+                            "codecTag": video.codecTag,
+                            "pixelFormat": video.pixelFormat,
+                            "bitRate": video.bitRate,
+                            "frameRate": video.frameRate,
+                            "rotation": video.rotation,
+                            "durationMillis": video.durationMillis
+                        ] as [String: Any]
+                    },
+                    "audios": result.audioTracks.map { audio in
+                        return [
+                            "index": audio.index,
+                            "codec": audio.codec,
+                            "codecTag": audio.codecTag,
+                            "sampleFormat": audio.sampleFormat,
+                            "bitRate": audio.bitRate,
+                            "sampleRate": audio.sampleRate,
+                            "channels": audio.channels,
+                            "channelLayout": audio.channelLayout,
+                            "durationMillis": audio.durationMillis
+                        ] as [String: Any]
+                    }
+                ]
+//                let dictionaryResult = result.map { videoInfo in
+//                    return [
+//                        "path": videoInfo.path,
+//                        "size": videoInfo.size,
+//                        "durationMillis": videoInfo.durationMillis,
+//                        "format": videoInfo.format,
+//                        "videos": videoInfo.videos.map { video in
+//                            return [
+//                                "index": video.index,
+//                                "width": video.width,
+//                                "height": video.height,
+//                                "rotatedWidth": video.rotatedWidth,
+//                                "rotatedHeight": video.rotatedHeight,
+//                                "codec": video.codec,
+//                                "codecTag": video.codecTag,
+//                                "pixelFormat": video.pixelFormat,
+//                                "bitRate": video.bitRate,
+//                                "frameRate": video.frameRate,
+//                                "rotation": video.rotation,
+//                                "durationMillis": video.durationMillis
+//                            ] as [String: Any]
+//                        },
+//                        "audios": videoInfo.audios.map { audio in
+//                            return [
+//                                "index": audio.index,
+//                                "codec": audio.codec,
+//                                "codecTag": audio.codecTag,
+//                                "sampleFormat": audio.sampleFormat,
+//                                "bitRate": audio.bitRate,
+//                                "sampleRate": audio.sampleRate,
+//                                "channels": audio.channels,
+//                                "channelLayout": audio.channelLayout,
+//                                "durationMillis": audio.durationMillis
+//                            ] as [String: Any]
+//                        }
+//                    ] as [String: Any]
+//                }
                 
-                let dictionaryResult = result.map { videoInfo in
-                    return [
-                        "path": videoInfo.path,
-                        "size": videoInfo.size,
-                        "durationMillis": videoInfo.durationMillis,
-                        "format": videoInfo.format,
-                        "videos": videoInfo.videos.map { video in
-                            return [
-                                "index": video.index,
-                                "width": video.width,
-                                "height": video.height,
-                                "rotatedWidth": video.rotatedWidth,
-                                "rotatedHeight": video.rotatedHeight,
-                                "codec": video.codec,
-                                "codecTag": video.codecTag,
-                                "pixelFormat": video.pixelFormat,
-                                "bitRate": video.bitRate,
-                                "frameRate": video.frameRate,
-                                "rotation": video.rotation,
-                                "durationMillis": video.durationMillis
-                            ] as [String: Any]
-                        },
-                        "audios": videoInfo.audios.map { audio in
-                            return [
-                                "index": audio.index,
-                                "codec": audio.codec,
-                                "codecTag": audio.codecTag,
-                                "sampleFormat": audio.sampleFormat,
-                                "bitRate": audio.bitRate,
-                                "sampleRate": audio.sampleRate,
-                                "channels": audio.channels,
-                                "channelLayout": audio.channelLayout,
-                                "durationMillis": audio.durationMillis
-                            ] as [String: Any]
-                        }
-                    ] as [String: Any]
-                }
-                
-                completion(dictionaryResult, nil)
+                completion(newResult, nil)
             } catch {
                 completion(nil, error)
             }
@@ -591,7 +625,7 @@ extension TruvideoSdkVideoRequest{
         createdAt: Date? = nil,
         updatedAt: Date = Date(),
         errorMessage: String? = nil,
-        outputPath: URL? = nil,
+        outputPath: URL? = nil
     ) {
         self.id = id
         self.type = type

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		186454942D9192E700BE0E21 /* TruvideoSdkVideo in Frameworks */ = {isa = PBXBuildFile; productRef = 186454932D9192E700BE0E21 /* TruvideoSdkVideo */; };
+		186053212E86B2B000D69C9C /* TruvideoSdkVideo in Frameworks */ = {isa = PBXBuildFile; productRef = 186053202E86B2B000D69C9C /* TruvideoSdkVideo */; };
 		F52CBD3B2C91E2A90061DF99 /* TruvideoVideo.h in Headers */ = {isa = PBXBuildFile; fileRef = F52CBD3A2C91E2A90061DF99 /* TruvideoVideo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F52CBD4B2C91E3F60061DF99 /* TruvideoVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52CBD4A2C91E3F60061DF99 /* TruvideoVideo.swift */; };
 /* End PBXBuildFile section */
@@ -23,7 +23,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				186454942D9192E700BE0E21 /* TruvideoSdkVideo in Frameworks */,
+				186053212E86B2B000D69C9C /* TruvideoSdkVideo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +84,7 @@
 			);
 			name = TruvideoVideo;
 			packageProductDependencies = (
-				186454932D9192E700BE0E21 /* TruvideoSdkVideo */,
+				186053202E86B2B000D69C9C /* TruvideoSdkVideo */,
 			);
 			productName = TruvideoCore;
 			productReference = F52CBD372C91E2A90061DF99 /* TruvideoVideo.framework */;
@@ -115,7 +115,7 @@
 			);
 			mainGroup = F52CBD2D2C91E2A90061DF99;
 			packageReferences = (
-				186454922D9192E700BE0E21 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-video" */,
+				1860531F2E86B2B000D69C9C /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-video" */,
 			);
 			productRefGroup = F52CBD382C91E2A90061DF99 /* Products */;
 			projectDirPath = "";
@@ -360,20 +360,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		186454922D9192E700BE0E21 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-video" */ = {
+		1860531F2E86B2B000D69C9C /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-video" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Truvideo/truvideo-sdk-ios-video.git";
 			requirement = {
-				kind = exactVersion;
-				version = 76.2.1;
+				kind = upToNextMajorVersion;
+				minimumVersion = 78.1.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		186454932D9192E700BE0E21 /* TruvideoSdkVideo */ = {
+		186053202E86B2B000D69C9C /* TruvideoSdkVideo */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 186454922D9192E700BE0E21 /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-video" */;
+			package = 1860531F2E86B2B000D69C9C /* XCRemoteSwiftPackageReference "truvideo-sdk-ios-video" */;
 			productName = TruvideoSdkVideo;
 		};
 /* End XCSwiftPackageProductDependency section */

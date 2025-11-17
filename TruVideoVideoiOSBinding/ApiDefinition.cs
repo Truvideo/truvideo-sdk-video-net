@@ -45,8 +45,11 @@ namespace TruvideoVideoiOS
         [Export("clearNoiseWithInput:output:completion:")]
         void ClearNoise(NSUrl input, NSUrl output, Action<NSUrl, NSError> completion);
         
+        // [Export("getVideoInfoWithInput:completion:")]
+        // void GetVideoInfo(NSUrl input, Action<NSArray, NSError> completion);
+        
         [Export("getVideoInfoWithInput:completion:")]
-        void GetVideoInfo(NSUrl input, Action<NSArray, NSError> completion);
+        void GetVideoInfo(NSUrl input, Action<NSDictionary, NSError> completion);
         
         // Additional exposed methods from your Swift
         
