@@ -10,7 +10,10 @@ final public class TruvideoVideoSdk: NSObject {
     @objc
     public static let shared = TruvideoVideoSdk()
     private var cancellables = Set<AnyCancellable>()
-
+    private var requestStreams: [UUID: AnyCancellable] = [:]
+    private var processingRequests = Set<UUID>()
+    private var cancellingRequests = Set<UUID>()
+    
     private func createError(_ message: String, code: Int = -1) -> NSError {
         return NSError(domain: "TruvideoVideoSdkError", code: code, userInfo: [NSLocalizedDescriptionKey: message])
     }
@@ -333,66 +336,285 @@ final public class TruvideoVideoSdk: NSObject {
         }
     }
 
-    @objc public func getRequestById(id : String,completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void){
-      var cancellables = Set<AnyCancellable>()
-      do {
-        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
-        //let dateFormatter = ISO8601DateFormatter()
-          publisher
-              .sink { videoRequest in
-                  completion(videoRequest.videoRequest,nil)
-                cancellables.removeAll()
-              }
-              .store(in: &cancellables)
-      } catch {
-          completion(nil,error)
-          print("Failed to create publisher:", error)
-      }
+    @objc
+    public func getRequestById(
+        id: String,
+        completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void
+    ) {
+        guard let uuid = UUID(uuidString: id) else {
+            completion(nil, createError("Invalid id"))
+            return
+        }
+
+        do {
+            let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
+                .first()
+                .sink(
+                    receiveCompletion: { completionState in
+                        if case .failure(let error) = completionState {
+                            completion(nil, error)
+                        }
+                    },
+                    receiveValue: { request in
+                        completion(request.videoRequest, nil)
+                    }
+                )
+
+            requestStreams[uuid] = cancellable
+        } catch {
+            completion(nil, error)
+        }
     }
+
     
-    @objc public func cancel(id : String,completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void){
-      var cancellables = Set<AnyCancellable>()
-      do {
-        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
-          publisher
-              .sink { videoRequest in
-                do {
-                  try videoRequest.cancel()
-                    completion(videoRequest.videoRequest, nil)
-                  cancellables.removeAll()
-                }catch{
-                 completion(nil, error)
-                }
-              }
-              .store(in: &cancellables)
-      } catch {
-          completion(nil,error)
-          print("Failed to create publisher:", error)
-      }
+//    @objc
+//    public func process(
+//        id: String,
+//        completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void
+//    ) {
+//        guard let uuid = UUID(uuidString: id) else {
+//            completion(nil, createError("Invalid request id"))
+//            return
+//        }
+//
+//        guard processingRequests.insert(uuid).inserted else {
+//            completion(nil, createError("Process already started"))
+//            return
+//        }
+//
+//        do {
+//            let publisher = try TruvideoSdkVideo.streamRequest(withId: uuid)
+//                .removeDuplicates(by: { $0.status == $1.status })
+//                .share()
+//
+//            let cancellable = publisher
+//                .sink(
+//                    receiveCompletion: { [weak self] completionState in
+//                        self?.processingRequests.remove(uuid)
+//                        if case .failure(let error) = completionState {
+//                            completion(nil, error)
+//                        }
+//                    },
+//                    receiveValue: { [weak self] request in
+//                        guard request.status == .idle else { return }
+//
+//                        Task {
+//                            do {
+//                                try await request.process()
+//                                completion(request.videoRequest, nil)
+//                            } catch {
+//                                completion(nil, error)
+//                            }
+//                            self?.processingRequests.remove(uuid)
+//                        }
+//                    }
+//                )
+//
+//            requestStreams[uuid] = cancellable
+//
+//        } catch {
+//            processingRequests.remove(uuid)
+//            completion(nil, error)
+//        }
+//    }
+//
+//    @objc
+//    public func cancel(
+//        id: String,
+//        completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void
+//    ) {
+//        guard let uuid = UUID(uuidString: id) else {
+//            completion(nil, createError("Invalid request id"))
+//            return
+//        }
+//
+//        guard cancellingRequests.insert(uuid).inserted else {
+//            completion(nil, createError("Cancel already in progress"))
+//            return
+//        }
+//
+//        do {
+//            let publisher = try TruvideoSdkVideo.streamRequest(withId: uuid)
+//                .removeDuplicates(by: { $0.status == $1.status })
+//                .share()
+//
+//            let cancellable = publisher
+//                .sink(
+//                    receiveCompletion: { [weak self] completionState in
+//                        self?.cancellingRequests.remove(uuid)
+//                        if case .failure(let error) = completionState {
+//                            completion(nil, error)
+//                        }
+//                    },
+//                    receiveValue: { [weak self] request in
+//                        guard request.status != .cancelled,
+//                              request.status != .complete else {
+//                            self?.cancellingRequests.remove(uuid)
+//                            completion(request.videoRequest, nil)
+//                            return
+//                        }
+//
+//                        do {
+//                            try request.cancel()
+//                            completion(request.videoRequest, nil)
+//                        } catch {
+//                            completion(nil, error)
+//                        }
+//
+//                        self?.cancellingRequests.remove(uuid)
+//                    }
+//                )
+//
+//            requestStreams[uuid] = cancellable
+//
+//        } catch {
+//            cancellingRequests.remove(uuid)
+//            completion(nil, error)
+//        }
+//    }
+
+    @objc
+    public func process(
+        id: String,
+        completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void
+    ) {
+        guard let uuid = UUID(uuidString: id) else {
+            completion(nil, createError("Invalid request id"))
+            return
+        }
+
+        guard processingRequests.insert(uuid).inserted else {
+            completion(nil, createError("Request already processing"))
+            return
+        }
+
+        var hasCalledCompletion = false
+        let completionOnce: (TruvideoVideoSdkRequest?, Error?) -> Void = { result, error in
+            guard !hasCalledCompletion else { return }
+            hasCalledCompletion = true
+            completion(result, error)
+        }
+
+        do {
+            let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
+                .first() // 🔑 ALWAYS take first emission
+                .sink(
+                    receiveCompletion: { [weak self] completionState in
+                        self?.processingRequests.remove(uuid)
+                        self?.requestStreams.removeValue(forKey: uuid)
+
+                        if case .failure(let error) = completionState {
+                            completionOnce(nil, error)
+                        }
+                    },
+                    receiveValue: { [weak self] request in
+                        guard let self = self else { return }
+                        
+                        // Cancel subscription immediately after getting the value
+                        self.requestStreams.removeValue(forKey: uuid)?.cancel()
+
+                        // 🔑 STATE CHECK HERE
+                        guard request.status == .idle else {
+                            completionOnce(
+                                request.videoRequest,
+                                self.createError("Request already in progress")
+                            )
+                            self.processingRequests.remove(uuid)
+                            return
+                        }
+
+                        Task {
+                            do {
+                                try await request.process()
+                                completionOnce(request.videoRequest, nil)
+                            } catch {
+                                completionOnce(nil, error)
+                            }
+
+                            self.processingRequests.remove(uuid)
+                        }
+                    }
+                )
+
+            requestStreams[uuid] = cancellable
+
+        } catch {
+            processingRequests.remove(uuid)
+            completion(nil, error)
+        }
     }
-    
-    @objc public func process(id : String, completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void){
-      var cancellables = Set<AnyCancellable>()
-      do {
-        let publisher = try TruvideoSdkVideo.streamRequest(withId: UUID(uuidString :id) ?? UUID())
-          publisher
-              .sink { videoRequest in
-                Task{
-                  do {
-                    let _ = try await videoRequest.process()
-                      completion(videoRequest.videoRequest,nil)
-                    cancellables.removeAll()
-                  }catch{
-                    completion(nil,error)
-                  }
-                }
-              }
-              .store(in: &cancellables)
-      } catch {
-          completion(nil,error)
-          print("Failed to create publisher:", error)
-      }
+
+    @objc
+    public func cancel(
+        id: String,
+        completion: @escaping (_ result: TruvideoVideoSdkRequest?, _ error: Error?) -> Void
+    ) {
+        guard let uuid = UUID(uuidString: id) else {
+            completion(nil, createError("Invalid request id"))
+            return
+        }
+
+        guard cancellingRequests.insert(uuid).inserted else {
+            completion(nil, createError("Cancel already in progress"))
+            return
+        }
+
+        var hasCalledCompletion = false
+        let completionOnce: (TruvideoVideoSdkRequest?, Error?) -> Void = { result, error in
+            guard !hasCalledCompletion else { return }
+            hasCalledCompletion = true
+            completion(result, error)
+        }
+
+        do {
+            let cancellable = try TruvideoSdkVideo.streamRequest(withId: uuid)
+                .first() // 🔑 NOT first(where:)
+                .sink(
+                    receiveCompletion: { [weak self] completionState in
+                        self?.cancellingRequests.remove(uuid)
+                        self?.requestStreams.removeValue(forKey: uuid)
+
+                        if case .failure(let error) = completionState {
+                            completionOnce(nil, error)
+                        }
+                    },
+                    receiveValue: { [weak self] request in
+                        guard let self = self else { return }
+                        
+                        // Cancel subscription immediately after getting the value
+                        self.requestStreams.removeValue(forKey: uuid)?.cancel()
+
+                        guard request.status == .processing else {
+                            completionOnce(
+                                request.videoRequest,
+                                self.createError("Request is not processing")
+                            )
+                            self.cancellingRequests.remove(uuid)
+                            return
+                        }
+
+                        Task {
+                            do {
+                                try await request.cancel()
+                                completionOnce(request.videoRequest, nil)
+                            } catch {
+                                completionOnce(nil, error)
+                            }
+
+                            self.cancellingRequests.remove(uuid)
+                        }
+                    }
+                )
+
+            requestStreams[uuid] = cancellable
+
+        } catch {
+            cancellingRequests.remove(uuid)
+            completion(nil, error)
+        }
     }
+
+
     @objc
     public func getVideoInfo(input: URL, completion: @escaping (_ response: [String: Any]?, _ error: Error?) -> Void) {
         Task {
@@ -650,3 +872,6 @@ extension TruvideoSdkVideoRequest{
     case merge
     case concat
 }
+
+
+

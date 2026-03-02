@@ -365,7 +365,7 @@
 			repositoryURL = "https://github.com/Truvideo/truvideo-sdk-ios-video.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 78.1.1;
+				minimumVersion = 78.1.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

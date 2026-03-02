@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
-// swift-module-flags: -target arm64-apple-ios17.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name TruvideoVideo
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+// swift-compiler-version: Apple Swift version 6.2.1 effective-5.10 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target arm64-apple-ios17.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name TruvideoVideo
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
 import Combine
 import CommonCrypto
 import Foundation
@@ -14,33 +14,67 @@ import _StringProcessing
 import _SwiftConcurrencyShims
 @_inheritsConvenienceInitializers @objc final public class TruvideoVideoSdk : ObjectiveC.NSObject {
   @objc public static let shared: TruvideoVideo.TruvideoVideoSdk
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func generateThumbnail(request: TruvideoVideo.ThumbnailRequest, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func getAllRequestObjC(withStatus: TruvideoVideo.VideoRequestStatus, completion: @escaping (_ result: Foundation.NSArray?, _ error: Foundation.NSError?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func streamRequestsObjC(withStatus: TruvideoVideo.VideoRequestStatus, completion: @escaping (_ result: Foundation.NSArray?, _ error: Foundation.NSError?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func streamRequests(withId: Swift.String, completion: @escaping (_ result: Foundation.NSDictionary?, _ error: Foundation.NSError?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func editVideo(input: Foundation.URL, output: Foundation.URL, viewController: UIKit.UIViewController, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func concatVideos(input: [Foundation.URL], output: Foundation.URL, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func mergeVideos(input: [Foundation.URL], output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func encodeVideo(input: Foundation.URL, output: Foundation.URL, width: Foundation.NSNumber?, height: Foundation.NSNumber?, frameRate: TruvideoVideo.VideoFrameRate, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func compareVideos(input: [Foundation.URL], completion: @escaping (_ result: Swift.Bool, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func clearNoise(input: Foundation.URL, output: Foundation.URL, completion: @escaping (_ result: Foundation.URL?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func getRequestById(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
-  @objc final public func cancel(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func process(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc final public func cancel(id: Swift.String, completion: @escaping (_ result: TruvideoVideo.TruvideoVideoSdkRequest?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc final public func getVideoInfo(input: Foundation.URL, completion: @escaping (_ response: [Swift.String : Any]?, _ error: (any Swift.Error)?) -> Swift.Void)
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
 @objc public class ThumbnailRequest : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public init(url: Foundation.URL, position: Foundation.NSNumber?, width: Foundation.NSNumber?, height: Foundation.NSNumber?, outputURL: Foundation.URL)
+  #endif
   @objc deinit
 }
 @objc public class VideoTracks : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public init(entryIndex: Foundation.NSNumber, width: Foundation.NSNumber? = nil, height: Foundation.NSNumber? = nil)
+  #endif
   @objc deinit
 }
 @objc public class MergeVideoTracks : ObjectiveC.NSObject {
+  #if compiler(>=5.3) && $NonescapableTypes
   @objc public init(entryIndex: Foundation.NSNumber, width: Foundation.NSNumber? = nil, height: Foundation.NSNumber? = nil, fileIndex: Foundation.NSNumber)
+  #endif
   @objc deinit
 }
 @objc public class MergeAudioTracks : ObjectiveC.NSObject {
@@ -53,7 +87,9 @@ import _SwiftConcurrencyShims
   case idle
   case processing
   case complete
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.Int)
+  #endif
   public typealias RawValue = Swift.Int
   public var rawValue: Swift.Int {
     get
@@ -65,7 +101,9 @@ import _SwiftConcurrencyShims
   case thirtyFps
   case fiftyFps
   case sixtyFps
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.Int)
+  #endif
   public typealias RawValue = Swift.Int
   public var rawValue: Swift.Int {
     get
@@ -85,7 +123,9 @@ import _SwiftConcurrencyShims
   case encode
   case merge
   case concat
+  #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.Int)
+  #endif
   public typealias RawValue = Swift.Int
   public var rawValue: Swift.Int {
     get

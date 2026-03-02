@@ -1055,82 +1055,6 @@
           },
           {
             "kind": "Function",
-            "name": "cancel",
-            "printedName": "cancel(id:completion:)",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
-              },
-              {
-                "kind": "TypeFunc",
-                "name": "Function",
-                "printedName": "(TruvideoVideo.TruvideoVideoSdkRequest?, (any Swift.Error)?) -> ()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Tuple",
-                    "printedName": "(TruvideoVideo.TruvideoVideoSdkRequest?, (any Swift.Error)?)",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Optional",
-                        "printedName": "TruvideoVideo.TruvideoVideoSdkRequest?",
-                        "children": [
-                          {
-                            "kind": "TypeNominal",
-                            "name": "TruvideoVideoSdkRequest",
-                            "printedName": "TruvideoVideo.TruvideoVideoSdkRequest",
-                            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdkRequest"
-                          }
-                        ],
-                        "usr": "s:Sq"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Optional",
-                        "printedName": "(any Swift.Error)?",
-                        "children": [
-                          {
-                            "kind": "TypeNominal",
-                            "name": "Error",
-                            "printedName": "any Swift.Error",
-                            "usr": "s:s5ErrorP"
-                          }
-                        ],
-                        "usr": "s:Sq"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            "declKind": "Func",
-            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk(im)cancelWithId:completion:",
-            "mangledName": "$s13TruvideoVideo0aB3SdkC6cancel2id10completionySS_yAA0abC7RequestCSg_s5Error_pSgtctF",
-            "moduleName": "TruvideoVideo",
-            "objc_name": "cancelWithId:completion:",
-            "declAttributes": [
-              "Final",
-              "AccessControl",
-              "ObjC"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
             "name": "process",
             "printedName": "process(id:completion:)",
             "children": [
@@ -1198,6 +1122,83 @@
             "mangledName": "$s13TruvideoVideo0aB3SdkC7process2id10completionySS_yAA0abC7RequestCSg_s5Error_pSgtctF",
             "moduleName": "TruvideoVideo",
             "objc_name": "processWithId:completion:",
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "cancel",
+            "printedName": "cancel(id:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(TruvideoVideo.TruvideoVideoSdkRequest?, (any Swift.Error)?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(TruvideoVideo.TruvideoVideoSdkRequest?, (any Swift.Error)?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "TruvideoVideo.TruvideoVideoSdkRequest?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "TruvideoVideoSdkRequest",
+                            "printedName": "TruvideoVideo.TruvideoVideoSdkRequest",
+                            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdkRequest"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "(any Swift.Error)?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Error",
+                            "printedName": "any Swift.Error",
+                            "usr": "s:s5ErrorP"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@TruvideoVideo@objc(cs)TruvideoVideoSdk(im)cancelWithId:completion:",
+            "mangledName": "$s13TruvideoVideo0aB3SdkC6cancel2id10completionySS_yAA0abC7RequestCSg_s5Error_pSgtctF",
+            "moduleName": "TruvideoVideo",
+            "objc_name": "cancelWithId:completion:",
             "declAttributes": [
               "Final",
               "AccessControl",
@@ -3544,79 +3545,86 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "kind": "Dictionary",
+      "offset": 320,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 324,
+      "offset": 487,
       "length": 2,
       "value": "-1"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22752,
+      "offset": 30733,
       "length": 5,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22767,
+      "offset": 30748,
       "length": 4,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22781,
+      "offset": 30762,
       "length": 10,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22801,
+      "offset": 30782,
       "length": 8,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22885,
+      "offset": 30866,
       "length": 13,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22908,
+      "offset": 30889,
       "length": 9,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22927,
+      "offset": 30908,
       "length": 8,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 22945,
+      "offset": 30926,
       "length": 8,
       "value": "4"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 25293,
+      "offset": 33274,
       "length": 5,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpdateiOSSDK\/TruVideoSampleIOSApp\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
+      "filePath": "\/Users\/apple\/Documents\/TruVideo\/UpgradeSDK79\/maui-sdk-demo-app-source\/iOS\/TruvideoVideo\/TruvideoVideo\/TruvideoVideo.swift",
       "kind": "IntegerLiteral",
-      "offset": 25308,
+      "offset": 33289,
       "length": 6,
       "value": "2"
     }
