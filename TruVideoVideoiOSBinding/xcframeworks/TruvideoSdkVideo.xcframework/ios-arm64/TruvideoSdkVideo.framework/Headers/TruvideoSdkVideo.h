@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <TruvideoSdkVideo/krisp-audio-sdk.hpp>
 
 //! Project version number for TruvideoSdkNoiseCancelling.
 FOUNDATION_EXPORT double TruvideoSdkVideoVersionNumber;
@@ -14,6 +13,4 @@ FOUNDATION_EXPORT double TruvideoSdkVideoVersionNumber;
 //! Project version string for TruvideoSdkNoiseCancelling.
 FOUNDATION_EXPORT const unsigned char TruvideoSdkVideoVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <TruvideoSdkNoiseCancelling/PublicHeader.h>
-
-
+// In this header, you should import all the public headers of your framework using statements like #import <TruvideoSdkNoiseCancelling/PublicHeader.h
